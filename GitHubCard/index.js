@@ -1,7 +1,25 @@
+// import {
+//   createReadStream
+// } from "fs";
+
+//import axios from './axios.js';
+
 /* Step 1: using axios, send a GET request to the following URL 
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
+
+// axios.get('https://api.github.com/users/juliethrallstewart')
+//   .then(data => {
+//     console.log('my github profile', data);
+//     data.forEach
+//   })
+//   .catch(error => {
+//     // Handles failure:
+//     console.log('error message: ', error)
+//   })
+
+
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -13,6 +31,9 @@
 /* Step 4: Pass the data received from Github into your function, 
            create a new component and add it to the DOM as a child of .cards
 */
+
+
+
 
 /* Step 5: Now that you have your own card getting added to the DOM, either 
           follow this link in your browser https://api.github.com/users/<Your github name>/followers 
@@ -45,11 +66,128 @@ const followersArray = [];
 </div>
 
 */
+// const cards = document.querySelector('.cards')
+// cards.classList.add('cards')
+
+function createCard(obj) {
+  const card = document.createElement('div')
+  const cardImage = document.createElement('img')
+  const cardInfo = document.createElement('div')
+  const name = document.createElement('h3')
+  const userName = document.createElement('p')
+  const location = document.createElement('p')
+  const profile = document.createElement('p')
+  const address = document.createElement('a') //inside profile 
+  const followers = document.createElement('p')
+  const following = document.createElement('p')
+  const bio = document.createElement('p')
+
+  card.classList.add('card')
+  name.classList.add('name')
+  userName.classList.add('userName')
+
+  cardImage.src = obj.data.avatar_url
+  name.textContent = obj.data.name
+  userName.textContent = obj.data.login
+  location.textContent = obj.data.null
+  address.textContent = obj.data.html_url
+  followers.textContent = obj.data.followers
+  following.textContent = obj.data.following
+  bio.textContent = obj.data.bio
+
+  card.appendChild(cardImage)
+  card.appendChild(cardInfo)
+  cardInfo.appendChild(name)
+  cardInfo.appendChild(userName)
+  cardInfo.appendChild(location)
+  cardInfo.appendChild(profile)
+  profile.appendChild(address) //goes inside profile 
+  cardInfo.appendChild(followers)
+  cardInfo.appendChild(following)
+  cardInfo.appendChild(bio)
+
+
+  return card
+
+}
+
 
 /* List of LS Instructors Github username's: 
+
   tetondan
   dustinmyers
   justsml
   luishrd
   bigknell
 */
+
+let handles = [
+  'juliethrallstewart',
+  'tetondan',
+  'dustinmyers',
+  'justsml',
+  'luishrd',
+  'bigknell',
+]
+template_addr = 'https://api.github.com/users/';
+
+
+// async function setupCards() {
+//   let cards = document.querySelector('.cards');
+//   for (let current of handles) {
+//     try {
+//       let person = await axios.get(`${template_addr}${current}`);
+//       cards.appendChild(createCard(person));
+//     } catch (e) {
+//       console.log(e);
+//     }
+//   }
+// }
+
+// setupCards();
+
+
+// const cards = document.querySelector('.cards')
+
+function makeCard() {
+  let cards = document.querySelector('.cards');
+
+  for (let item in handles) {
+    axios.get(`${template_addr}${item}`)
+      .then(data => {
+        //let person = axios.get(`${template_addr}${item}`);
+        cards.appendChild(createCard(data));
+      })
+      .catch(err => console.log('error reason: ', err))
+  }
+}
+
+makeCard();
+// for (let item in handles) {
+
+
+//   axios.get(`https://api.github.com/users/${item}`)
+//     .then(data => {
+//       //console.log("i\'m data yeah!", data)
+//       //console.log('user data', data)
+//       let users = data.data
+//       console.log(users)
+//       users.forEach(user => {
+//         console.log('working')
+//         let element = createCard(user)
+//         cards.appendChild(element)
+//       })
+//     })
+//     .catch(err => console.log('error reason: ', err))
+// }
+
+//   axios.get(`https://api.github.com/users/${item}`)
+//     .then(data => {
+//       //console.log("i\'m data yeah!", data)
+//       console.log(data.data)
+//       data.data.forEach(user => {
+//         console.log('working')
+//         cards.appendChild(createCard(user))
+//       })
+//     })
+//     .catch(err => console.log('error reason: ', err))
